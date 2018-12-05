@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<!--
+<div class="blog-header">
+  <h1 class="blog-title">Kawabunga</h1>
+  <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
+</div>
+-->
+
+<div class="col-sm-9 blog-main">
+  {% for obj in objects_list %}
+  <div class="blog-post">
+    <p class="blog-post-meta">Posted on {{ obj.publish }} by
+      <a href="#">{% if obj.user.get_full_name %}{{ obj.user.get_full_name }}{% endif %}</a>
+    </p>
+    {% if obj.image %}
+      <img class="img-thumbnail" src="{{ obj.image.url }}" alt="Card image cap">
+    {% endif %}
+      <h2 class="blog-post-title">{{ obj.title }}</h2>
+
+
+      <p>
+        {{ obj.get_markdown | truncatewords_html:30}}
+        <a href="{{ obj.get_absolute_url }}">Read More &rarr;</a>
+      </p>
+      <hr />
+      <p class="blog-post-meta"><i class="fa fa-tags" aria-hidden="true"></i>
+        {% for tag in obj.tags.all %}
+        <a href="#">{{ tag.tagName }}</a>
+        {% empty %}
+            No tags!
+        {% endfor %}
+      </p>
+      {% if obj.draft %}<h3><span style="color:red;">Draft</span></h3>{% endif %}
+      {% if obj.publish > today %}<h3><span style="color:red;">Not yet published</span></h3>{% endif %}
+  </div>
+  {% endfor %}
+
+
+  <div class="pagination">
+    <span class="step-links">
+      {% if objects_list.has_previous %}
+        <a href="?{{ page_request_var }}={{ objects_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"> Previous </a>
+      {% endif %}
+      <span class="current">
+        Page {{ objects_list.number }} of {{ objects_list.paginator.num_pages }}.
+      </span>
+      {% if objects_list.has_next %}
+        <a href="?{{ page_request_var }}={{ objects_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"> Next </a>
+      {% endif %}
+    </span>
+  </div>
+</div>
+
+
+<div class="col-sm-3 blog-sidebar">
+  <div class="sidebar-module sidebar-module-inset">
+    <h3>About</h3>
+    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+  </div>
+  <div class="sidebar-module">
+    <h4>Archives</h4>
+    <ol class="list-unstyled">
+      <li><a href="#">March 2014</a></li>
+      <li><a href="#">February 2014</a></li>
+      <li><a href="#">January 2014</a></li>
+      <li><a href="#">December 2013</a></li>
+      <li><a href="#">November 2013</a></li>
+      <li><a href="#">October 2013</a></li>
+      <li><a href="#">September 2013</a></li>
+      <li><a href="#">August 2013</a></li>
+      <li><a href="#">July 2013</a></li>
+      <li><a href="#">June 2013</a></li>
+      <li><a href="#">May 2013</a></li>
+      <li><a href="#">April 2013</a></li>
+    </ol>
+  </div>
+  <div class="sidebar-module">
+    <h4>Elsewhere</h4>
+    <ol class="list-unstyled">
+      <li><a href="#">GitHub</a></li>
+      <li><a href="#">Twitter</a></li>
+      <li><a href="#">Facebook</a></li>
+    </ol>
+  </div>
+</div>
+
+
+
+{% endblock content %}

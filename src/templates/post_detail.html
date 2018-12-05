@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block head_title %} {{ instance.title }} | {{ block.super }} {% endblock head_title %}
+
+
+
+
+{% block content %}
+
+<div class="col-sm-10 col-sm-offset-1 blog-main">
+    <ol class="breadcrumb">
+      <li><a href="{% url 'posts:list' %}">Home</a></li>
+      <li><a href="{{ instance.get_absolute_url }}"></a>{{ instance.title }}</li>
+      <!--
+      {% if not request.user.is_authenticated %}
+      <li class="pull-right"><a href='{% url "register" %}'>Register</a></li>
+      <li class="pull-right"><a href='{% url "login" %}'>Login</a></li>
+      {% else %}
+      <li class="pull-right"><a href='{% url "logout" %}'>Logout</a></li>
+      {% endif %}-->
+    </ol>
+
+    <!-- Title -->
+    <h1 class="mt-4">{{ instance.title }}  <small> {% if instance.draft %} <span style='color:red'>Draft</span> {% endif %}{{ instance.publish }}</small></h1>
+
+    <p>Read Time : {% if instance.read_time <= 1 %} < 1 minute {% else %} {{ instance.read_time }} minutes</p> {% endif %}
+
+    <!-- Author -->
+    <p class="lead">
+      by
+      {% if instance.user.get_full_name %}
+        <a href="#">{{ instance.user.get_full_name }}</a>
+      {% endif %}
+    </p>
+    <hr>
+
+    <!-- Date/Time -->
+    <p>Posted on {{ instance.publish }}</p>
+    <hr>
+
+    <!-- Preview Image -->
+    {% if instance.image %}
+      <img src='{{ instance.image.url }}' class='img-responsive'>
+    {% endif %}
+    <hr>
+
+    <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="false"></div>
+
+    <div class="post-detail-item">{{ instance.get_markdown }}</div>
+        {{ instance.updated }}<br><br>
+
+    <div class="row">
+      <div class="col-sm-2"><a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"><i class="fa fa-facebook-official fa-2x" aria-hidden="true"></i></a>
+
+        <a href='https://plus.google.com/share?url={{ request.build_absolute_uri }}'><i class="fa fa-google-plus-official fa-2x" aria-hidden="true"></i></a></div>
+
+    </div>
+    <hr>
+
+
+
+    <!-- Comments Section -->
+    <div class="row">
+      <div class="col-sm-12">
+        <p class="lead">Comments</p>
+        {% if request.user.is_authenticated %}
+          <form method="POST" class="textarea" action=""> {% csrf_token %}
+            {{ comment_form | crispy}}
+            <input type="submit" value="Post Comment" class="btn btn-default">
+          </form>
+        {% else %}
+          <p>You must login to comment</p>
+        {% endif %}
+
+        {% for comment in comments %}
+        <div class="panel panel-white post panel-shadow">
+          <div class="post-heading">
+            <div class="pull-left image">
+              <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
+            </div>
+            <div class="pull-left meta">
+              <div class="title h5">
+                <a href="#"><b>{{ comment.user }}</b></a> a comment.
+                {% if comment.children.count >= 0 %}
+                {{ comment.children.count }} Comment{% if comment.children.count > 1  %}s{% endif %} |
+                <a class="comment-reply-btn" href="#">Reply</a> |
+                <a href="{{ comment.get_absolute_url }}">Thread</a>{% endif %}
+              </div>
+              <h6 class="text-muted time">{{ comment.timestamp | timesince }}</h6>
+            </div>
+          </div>
+          <div class="post-description">
+            <p>{{ comment.content }}</p>
+          <!--  <div class="stats">
+
+              <footer class="title h5">
+              <a href="#" class="btn btn-default stat-item">
+                <i class="fa fa-thumbs-up icon"></i>2
+              </a>
+              <a href="#" class="btn btn-default stat-item">
+                <i class="fa fa-thumbs-down icon"></i>12
+              </a>
+              </footer>
+
+            </div> -->
+          </div>
+        </div>
+        <div class="comment-reply">
+          <!-- Loop to display the replies -->
+          <blockquote class="subcomment">
+            {% for child_comment in comment.children  %}
+            <div class="panel panel-white post panel-shadow">
+              <div class="post-heading">
+                <div class="pull-left image">
+                    <img src="http://bootdey.com/img/Content/user_1.jpg" class="img-circle avatar" alt="user profile image">
+                </div>
+                <div class="pull-left meta">
+                    <div class="title h5">
+                        <a href="#"><b>{{ child_comment.user }}</b></a>
+                        made a post.
+                    </div>
+                    <h6 class="text-muted time">{{ child_comment.timestamp | timesince }}ago</h6>
+                </div>
+              </div>
+              <div class="post-description">
+                  <p>{{ child_comment.content }}</p>
+              </div>
+            </div>
+            {% endfor %}
+            <!-- Form of the reply comments -->
+            {% if request.user.is_authenticated %}
+              <form method="POST" class="textarea" action=""> {% csrf_token %}
+                {{ comment_form | crispy}}
+                <!-- we send the parent_id of the current comment via POST -->
+                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                <input type="submit" value="Reply" class="btn btn-default">
+              </form>
+            {% else %}
+              <p>You must login to comment</p>
+            {% endif %}
+          </blockquote>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- End of Comments Section -->
+</div>
+
+{% endblock content %}

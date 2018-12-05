@@ -1,0 +1,271 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+
+
+
+{% block head_extra %}{% endblock head_extra %}
+
+<title>{% block head_title %} Kawabunga {% endblock head_title %}</title>
+</head>
+
+<body>
+
+
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.10";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+
+  {% include "messages_display.html" %}
+
+
+
+
+  <!-- header -->
+
+          <!--
+  				<li>
+          <form action="" method="get">
+  				<div class="search2">
+  					<form>
+  						<input id="searchInput" width="80px" type="text" value="{{ request.GET.q }}" name="q"  onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search..';}">
+  						<input type="submit" value="">
+  					</form>
+  				</div>
+          </form>
+         </li>
+       -->
+
+
+
+  <!--
+                {% if not request.user.is_authenticated %}
+                <li class="pull-right"><a href='{% url "register" %}'>Register</a></li>
+                <li class="pull-right"><a href='{% url "login" %}'>Login</a></li>
+                {% else %}
+                <li class="pull-right"><a href='{% url "logout" %}'>Logout</a></li>
+                {% endif %}
+-->
+
+
+
+
+
+<nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Kawabunga</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="{% url 'posts:list' %}">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+    </ul>
+    <form class="navbar-form navbar-right" action="" method="get">
+      <div class="input-group">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search" value="{{ request.GET.q }}" name="q" >
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+    <ul class="nav navbar-nav navbar-right">
+      {% if not request.user.is_authenticated %}
+      <li><a href="{% url 'register' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      {% else %}
+      <li class="pull-right"><a href='{% url "logout" %}'>Logout</a></li>
+      {% endif %}
+
+    </ul>
+  </div>
+</nav>
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <div class="row">
+        <!-- Blog Entries Column -->
+        <!--<div class="col-sm-9 blog-main">-->
+          <!-- Blog Post -->
+          {% block content %}
+          {% endblock content %}
+        <!--</div>-->
+
+        <!-- Sidebar Widgets Column -->
+        <!--<div class="col-sm-3 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h3>About</h3>
+            <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+          </div>
+          <div class="sidebar-module">
+            <h4>Archives</h4>
+            <ol class="list-unstyled">
+              <li><a href="#">March 2014</a></li>
+              <li><a href="#">February 2014</a></li>
+              <li><a href="#">January 2014</a></li>
+              <li><a href="#">December 2013</a></li>
+              <li><a href="#">November 2013</a></li>
+              <li><a href="#">October 2013</a></li>
+              <li><a href="#">September 2013</a></li>
+              <li><a href="#">August 2013</a></li>
+              <li><a href="#">July 2013</a></li>
+              <li><a href="#">June 2013</a></li>
+              <li><a href="#">May 2013</a></li>
+              <li><a href="#">April 2013</a></li>
+            </ol>
+          </div>
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="#">GitHub</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">Facebook</a></li>
+            </ol>
+          </div>
+        </div>-->
+
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container -->
+
+
+
+
+
+
+<!-- Footer -->
+
+
+
+<script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.js"></script>
+<script src"https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js"></script>
+<script src="https://use.fontawesome.com/01dd907ac7.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $("#searchInput").focus(function(){
+      $(this).css("color", "#cccccc");
+      $(this).animate({width: '+=150'}, "slow");
+
+      //$(this).width(400);
+    });
+    $("#searchInput").blur(function(){
+      $(this).css("color", "#6f879a");
+      $(this).animate({width: '-=150'}, "slow");
+      $(this).text(Search)
+
+      //$(this).width(400);
+    });
+
+
+    $(".content-markdown").each(function(){
+      var content = $(this).text();
+      //console.log(content);
+      var markedContent = marked(content);
+      //console.log(markedContent);
+      $(this).html(markedContent);
+    });
+
+
+    $(".post-detail-item img").each(function(){
+      var content = $(this).text();
+      $(this).addClass("img-responsive");
+    });
+
+
+    var contentInput = $("#id_content");
+
+    function setContent(value){
+      var markedContent = marked(value);
+      $("#preview-content").html(markedContent);
+      $("#preview-content img").each(function(){
+        $(this).addClass("img-responsive");
+      });
+    };
+
+    setContent(contentInput.val());
+
+    contentInput.keyup(function(){
+      var newContent = $(this).val();
+      setContent(newContent);
+    });
+
+
+    var titleInput = $("#id_title");
+
+    function setTitle(value){
+      $("#preview-title").text(value);
+    }
+    setTitle(titleInput.val());
+
+
+    titleInput.keyup(function(){
+      var newContent = $(this).val();
+      setTitle(newContent);
+    });
+
+    // preventDefault() prevent the link <a> to work when clicked
+    // this.parent.next select the correct class tag
+    $(".comment-reply-btn").click(function(event){
+        event.preventDefault();
+        $(this).parent().parent().parent().parent().next(".comment-reply").fadeToggle();
+        //$(".comment-reply").fadeToggle();
+
+    });
+
+
+
+
+  });
+</script>
+<!-- script-for-nav -->
+<script>
+$( "span.menu" ).click(function() {
+  $( ".head-nav ul" ).slideToggle(300, function() {
+  // Animation complete.
+  });
+});
+</script>
+<!-- script-for-nav -->
+
+
+
+
+
+</body>
+
+</html>
