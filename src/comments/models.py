@@ -6,12 +6,6 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class CommentManager(models.Manager):
-
-    """used in tuto "Advancing the Blog: 16 - Reply to Comments" but not
-    sure where needed"""
-    """def all(self):
-        qs = super(CommentManager, self).filter(parent=None)
-        return qs"""
     #  we redefine the filter class
 
     def filter_by_instance(self, instance):
